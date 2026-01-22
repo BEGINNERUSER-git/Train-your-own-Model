@@ -4,6 +4,7 @@ scikit-learn
 matplotlib
 seaborn
 streamlit
-tensorflow
+tensorflow>=2.16,<2.20
+protobuf<4
 xgboost 
 joblib
