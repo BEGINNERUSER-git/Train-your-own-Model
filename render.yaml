@@ -5,5 +5,4 @@ services:
     plan: free
     buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
     startCommand: bash -c "streamlit run Dashboard.py --server.port $PORT --server.address 0.0.0.0"
-.
     autoDeploy: true
