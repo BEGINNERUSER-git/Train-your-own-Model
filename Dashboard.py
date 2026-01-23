@@ -435,28 +435,28 @@ with page1:
                                                 st.write("Classification Report:")
                                                 st.text(metrics_cv['classification_report'])
 
-
-            with st.expander("Model Comparison"):            
-                if 'Model A_metrics' in st.session_state["metrics_model"]:
-                    st.divider()
-                    st.subheader("Model Comparison")
-                    col1,col2=st.columns(2)
-                    with col1:
-                        st.markdown("### Model A Performance")
-                        metrics_a=st.session_state['metrics_model']['Model A_metrics']
-                        st.write(f"Accuracy: {metrics_a['accuracy']:.4f}")
-                        st.write(f"Precision: {metrics_a['precision']:.4f}")
-                        st.write(f"Recall: {metrics_a['recall']:.4f}")
-                        st.write(f"F1 Score: {metrics_a['f1_score']:.4f}")
-                    if 'Model B_metrics' in st.session_state["metrics_model"]:
-                        with col2:
-                            st.markdown("### Model B Performance")
-                            metrics_b=st.session_state['metrics_model']['Model B_metrics']
-                            st.write(f"Accuracy: {metrics_b['accuracy']:.4f}")
-                            st.write(f"Precision: {metrics_b['precision']:.4f}")
-                            st.write(f"Recall: {metrics_b['recall']:.4f}")
-                            st.write(f"F1 Score: {metrics_b['f1_score']:.4f}")
-                        
+            if Algorithm_Type!='Regression':
+                with st.expander("Model Comparison"):            
+                    if 'Model A_metrics' in st.session_state["metrics_model"]:
+                        st.divider()
+                        st.subheader("Model Comparison")
+                        col1,col2=st.columns(2)
+                        with col1:
+                            st.markdown("### Model A Performance")
+                            metrics_a=st.session_state['metrics_model']['Model A_metrics']
+                            st.write(f"Accuracy: {metrics_a['accuracy']:.4f}")
+                            st.write(f"Precision: {metrics_a['precision']:.4f}")
+                            st.write(f"Recall: {metrics_a['recall']:.4f}")
+                            st.write(f"F1 Score: {metrics_a['f1_score']:.4f}")
+                        if 'Model B_metrics' in st.session_state["metrics_model"]:
+                            with col2:
+                                st.markdown("### Model B Performance")
+                                metrics_b=st.session_state['metrics_model']['Model B_metrics']
+                                st.write(f"Accuracy: {metrics_b['accuracy']:.4f}")
+                                st.write(f"Precision: {metrics_b['precision']:.4f}")
+                                st.write(f"Recall: {metrics_b['recall']:.4f}")
+                                st.write(f"F1 Score: {metrics_b['f1_score']:.4f}")
+                            
 
 
     
