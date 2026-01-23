@@ -185,10 +185,10 @@ with page1:
             
 
 
-
-    shape=sidebar.button("Check shape of your data")
-    if shape:
-        st.sidebar.info(f"Data Shape: {data.shape}")
+    if mode=='Train New Model':
+        shape=sidebar.button("Check shape of your data")
+        if shape:
+            st.sidebar.info(f"Data Shape: {data.shape}")
 
 
     if mode == "Train New Model":
