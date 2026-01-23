@@ -426,14 +426,16 @@ with page1:
                                                 st.write(f"Precision: {metrics_cv['precision']:.4f}")
                                                 st.write(f"Recall: {metrics_cv['recall']:.4f}")
                                                 st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
-                                        if Algorithm_Type!='Regression':
+                                        
 
-                                            with tab_details:
-                                                
+                                        with tab_details:
+                                            if Algorithm_Type!='Regression':
                                                 st.write("Confusion Matrix:")
                                                 st.write(metrics_cv['confusion_matrix'])
                                                 st.write("Classification Report:")
                                                 st.text(metrics_cv['classification_report'])
+                                            else:
+                                                st.info("Not Valid for Continuous Values.")
 
             if Algorithm_Type!='Regression':
                 with st.expander("Model Comparison"):            
@@ -488,10 +490,10 @@ with page1:
                         st.subheader("Test Set Performance")
                         metrics_test=calculate_metrics(y_test, y_test_pred)
                         if Algorithm_Type=='Regression':
-                            st.write(f"MAE: {metrics_cv['MAE']:.4f}")
-                            st.write(f"MSE: {metrics_cv['MSE']:.4f}")
-                            st.write(f"RMSE: {metrics_cv['RMSE']:.4f}")
-                            st.write(f"R2: {metrics_cv['R2']:.4f}")
+                            st.write(f"MAE: {metrics_test['MAE']:.4f}")
+                            st.write(f"MSE: {metrics_test['MSE']:.4f}")
+                            st.write(f"RMSE: {metrics_test['RMSE']:.4f}")
+                            st.write(f"R2: {metrics_test['R2']:.4f}")
 
                         else:    
                             st.write(f"Accuracy: {metrics_test['accuracy']:.4f}")
