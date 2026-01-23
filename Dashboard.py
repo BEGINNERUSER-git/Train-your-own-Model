@@ -403,18 +403,23 @@ with page1:
                                     st.session_state['metrics_model'][f"{slot}_metrics"]=metrics_cv
                                 with st.expander(f"{slot} Model Performance"):
                                     if f'{slot}_metrics' in st.session_state["metrics_model"]:
-                                        metrics_cv=st.session_state['metrics_model'][f"{slot}_metrics"]
-                                        st.subheader(f"Cross-Validation Set Performance:{slot}")
-                                        st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
-                                        st.write(f"Precision: {metrics_cv['precision']:.4f}")
-                                        st.write(f"Recall: {metrics_cv['recall']:.4f}")
-                                        st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
-                                        with st.expander("Detailed Metrics"):
+                                        metrics_cv = st.session_state['metrics_model'][f"{slot}_metrics"]
 
+                                        tab_summary, tab_details = st.tabs(["Summary", "Detailed Metrics"])
+
+                                        with tab_summary:
+                                            st.subheader(f"Cross-Validation Set Performance: {slot}")
+                                            st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
+                                            st.write(f"Precision: {metrics_cv['precision']:.4f}")
+                                            st.write(f"Recall: {metrics_cv['recall']:.4f}")
+                                            st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
+
+                                        with tab_details:
                                             st.write("Confusion Matrix:")
                                             st.write(metrics_cv['confusion_matrix'])
                                             st.write("Classification Report:")
                                             st.text(metrics_cv['classification_report'])
+
 
             with st.expander("Model Comparison"):            
                 if 'Model A_metrics' in st.session_state["metrics_model"]:
