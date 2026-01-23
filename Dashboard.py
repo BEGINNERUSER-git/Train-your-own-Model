@@ -267,6 +267,11 @@ with page1:
         is_train=mode=='Train New Model'
         applies_to_X_train= st.checkbox("Fit_transform to X_train",disabled=not is_train)
         if applies_to_X_train:
+            if 'scaler_object' not in st.session_state:
+                st.error("Scaler not initialized. Please reload the page.")
+                
+
+            standard = st.session_state['scaler_object']
             if 'X_train' in st.session_state:
                 X_train=st.session_state['X_train']
                 X_train_scaled=standard.fit_transform(X_train)
