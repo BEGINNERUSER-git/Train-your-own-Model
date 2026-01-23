@@ -355,7 +355,7 @@ with page1:
                             if Model_Type=="Multiclass_Classification":
                                 params['max_iters']=st.number_input("Enter Maximum no of iterations: ",min_value=100,max_value=10000,value=500,step=100,key=f"{slot}_multi_max_iters")
                                 params['lr']=st.slider("Slide to set learning rate: ",min_value=0.0001,max_value=0.1,value=0.01,step=0.0001,format="%.4f",key=f"{slot}_multi_lr")
-                            if Model_Type=="Linear_Regression":
+                            if Model_Type=="Linear_Regression"and Implementation_Type=='scratch':
                                 params['lr']=st.slider("Slide to set learning rate: ",min_value=0.0001,max_value=0.1,value=0.01,step=0.0001,format="%.4f",key=f"{slot}_lin_lr")
                                 params['max_iters']=st.number_input("Enter Maximum no of iterations: ",min_value=100,max_value=10000,value=500,step=100,key=f"{slot}_linreg_max_iters")
                             train=st.button(f"Train {slot}",key=f"train_{slot}",disabled=disabled)
