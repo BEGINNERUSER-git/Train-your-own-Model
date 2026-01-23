@@ -413,7 +413,7 @@ with page1:
                                         tab_summary, tab_details = st.tabs(["Summary", "Detailed Metrics"])
 
                                         with tab_summary:
-                                            if Model_Type=='Regression':
+                                            if Algorithm_Type=='Regression':
                                                 st.subheader(f" Set Performance: {slot}")
                                                 
                                                 st.write(f"MAE: {metrics_cv['MAE']:.4f}")
@@ -487,15 +487,22 @@ with page1:
                     else:
                         st.subheader("Test Set Performance")
                         metrics_test=calculate_metrics(y_test, y_test_pred)
-                        st.write(f"Accuracy: {metrics_test['accuracy']:.4f}")
-                        st.write(f"Precision: {metrics_test['precision']:.4f}")
-                        st.write(f"Recall: {metrics_test['recall']:.4f}")
-                        st.write(f"F1 Score: {metrics_test['f1_score']:.4f}")
-                        st.write("Confusion Matrix:")
-                        st.write(metrics_test['confusion_matrix'])
-                        st.write("Classification Report:")
-                        st.text(metrics_test['classification_report'])
-                 
+                        if Algorithm_Type=='Regression':
+                            st.write(f"MAE: {metrics_cv['MAE']:.4f}")
+                            st.write(f"MSE: {metrics_cv['MSE']:.4f}")
+                            st.write(f"RMSE: {metrics_cv['RMSE']:.4f}")
+                            st.write(f"R2: {metrics_cv['R2']:.4f}")
+
+                        else:    
+                            st.write(f"Accuracy: {metrics_test['accuracy']:.4f}")
+                            st.write(f"Precision: {metrics_test['precision']:.4f}")
+                            st.write(f"Recall: {metrics_test['recall']:.4f}")
+                            st.write(f"F1 Score: {metrics_test['f1_score']:.4f}")
+                            st.write("Confusion Matrix:")
+                            st.write(metrics_test['confusion_matrix'])
+                            st.write("Classification Report:")
+                            st.text(metrics_test['classification_report'])
+                    
                 else:
                     st.warning("Please train a model first in the 'Training' tab before evaluating on the test set.")
 
