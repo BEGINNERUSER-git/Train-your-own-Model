@@ -7,7 +7,7 @@ class LinearRegressionSklearn(BaseModel):
     def fit(self,X,y):
         self.model.fit(X,y)
     def predict(self, X):
-        return super().predict(X)
+        return self.model.predict(X)
 
 
 
