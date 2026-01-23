@@ -413,7 +413,7 @@ with page1:
                                         tab_summary, tab_details = st.tabs(["Summary", "Detailed Metrics"])
 
                                         with tab_summary:
-                                            if Algorithm_Type=='Regression':
+                                            if Model_Type=='Regression':
                                                 st.subheader(f" Set Performance: {slot}")
                                                 
                                                 st.write(f"MAE: {metrics_cv['MAE']:.4f}")
