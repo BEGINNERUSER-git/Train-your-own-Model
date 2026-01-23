@@ -521,7 +521,12 @@ with page1:
 
             df = pre['cleaner'].transform(pred_data)
             df = df.reindex(columns=pre['features'], fill_value=0)
-            df_scaled = pre['scaler'].transform(df)
+            scaler = pre.get("scaler")
+
+            if scaler is not None and getattr(scaler, "scaled_data", None) is not None:
+                df_scaled = scaler.transform(df)
+            else:
+                df_scaled = df 
 
             preds = model.predict(df_scaled)
 
