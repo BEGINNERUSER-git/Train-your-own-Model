@@ -137,7 +137,7 @@ with page1:
                 
             st.divider()
 
-            num_col=st.multiselect("Select Numerical Columns to Check Missing Values:", options=data.select_dtypes(include=[np.number]).columns.tolist())
+            num_col=st.multiselect("Select Numerical Columns to fill Missing Values:", options=data.select_dtypes(include=[np.number]).columns.tolist())
             strategy=st.selectbox("Select Strategy for Missing Values:", options=['mean', 'median', 'mode'])
             if st.button("Fill Missing Values"):
                 if num_col:
@@ -401,20 +401,20 @@ with page1:
                                     st.session_state[f'y_eval_pred for {slot}']=y_eval_pred
                                     metrics_cv=calculate_metrics(y_eval, y_eval_pred)
                                     st.session_state['metrics_model'][f"{slot}_metrics"]=metrics_cv
-                            with st.expander(f"{slot} Model Performance"):
-                                if f'{slot}_metrics' in st.session_state["metrics_model"]:
-                                    metrics_cv=st.session_state['metrics_model'][f"{slot}_metrics"]
-                                    st.subheader(f"Cross-Validation Set Performance:{slot}")
-                                    st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
-                                    st.write(f"Precision: {metrics_cv['precision']:.4f}")
-                                    st.write(f"Recall: {metrics_cv['recall']:.4f}")
-                                    st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
-                                    with st.expander("Detailed Metrics"):
+                                with st.expander(f"{slot} Model Performance"):
+                                    if f'{slot}_metrics' in st.session_state["metrics_model"]:
+                                        metrics_cv=st.session_state['metrics_model'][f"{slot}_metrics"]
+                                        st.subheader(f"Cross-Validation Set Performance:{slot}")
+                                        st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
+                                        st.write(f"Precision: {metrics_cv['precision']:.4f}")
+                                        st.write(f"Recall: {metrics_cv['recall']:.4f}")
+                                        st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
+                                        with st.expander("Detailed Metrics"):
 
-                                        st.write("Confusion Matrix:")
-                                        st.write(metrics_cv['confusion_matrix'])
-                                        st.write("Classification Report:")
-                                        st.text(metrics_cv['classification_report'])
+                                            st.write("Confusion Matrix:")
+                                            st.write(metrics_cv['confusion_matrix'])
+                                            st.write("Classification Report:")
+                                            st.text(metrics_cv['classification_report'])
 
             with st.expander("Model Comparison"):            
                 if 'Model A_metrics' in st.session_state["metrics_model"]:

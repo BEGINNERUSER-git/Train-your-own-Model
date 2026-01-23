@@ -41,7 +41,7 @@ MODEL_REGISTRY={
 
     "Anomaly_Detection":{
     "Gaussian Anomaly":{
-        "sklearn":AnomalyDetection
+        "scratch":AnomalyDetection
     },
 },
     "Regression":{
