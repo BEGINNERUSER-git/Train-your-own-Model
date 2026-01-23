@@ -77,9 +77,9 @@ with page1:
                 st.stop()
 
 
-    if sidebar.button("Reset and Upload New File"):
-        del st.session_state['data']
-        st.rerun()
+        if sidebar.button("Reset and Upload New File"):
+            del st.session_state['data']
+            st.rerun()
     
 
     if 'data' in st.session_state:
