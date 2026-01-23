@@ -413,17 +413,27 @@ with page1:
                                         tab_summary, tab_details = st.tabs(["Summary", "Detailed Metrics"])
 
                                         with tab_summary:
-                                            st.subheader(f"Cross-Validation Set Performance: {slot}")
-                                            st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
-                                            st.write(f"Precision: {metrics_cv['precision']:.4f}")
-                                            st.write(f"Recall: {metrics_cv['recall']:.4f}")
-                                            st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
+                                            if Algorithm_Type=='Regression':
+                                                st.subheader(f" Set Performance: {slot}")
+                                                
+                                                st.write(f"MAE: {metrics_cv['MAE']:.4f}")
+                                                st.write(f"MSE: {metrics_cv['MSE']:.4f}")
+                                                st.write(f"RMSE: {metrics_cv['RMSE']:.4f}")
+                                                st.write(f"R2: {metrics_cv['R2']:.4f}")
+                                            else:
+                                                st.subheader(f" Set Performance: {slot}")
+                                                st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
+                                                st.write(f"Precision: {metrics_cv['precision']:.4f}")
+                                                st.write(f"Recall: {metrics_cv['recall']:.4f}")
+                                                st.write(f"F1 Score: {metrics_cv['f1_score']:.4f}")
+                                        if Algorithm_Type!='Regression':
 
-                                        with tab_details:
-                                            st.write("Confusion Matrix:")
-                                            st.write(metrics_cv['confusion_matrix'])
-                                            st.write("Classification Report:")
-                                            st.text(metrics_cv['classification_report'])
+                                            with tab_details:
+                                                
+                                                st.write("Confusion Matrix:")
+                                                st.write(metrics_cv['confusion_matrix'])
+                                                st.write("Classification Report:")
+                                                st.text(metrics_cv['classification_report'])
 
 
             with st.expander("Model Comparison"):            
