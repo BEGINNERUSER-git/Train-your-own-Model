@@ -221,6 +221,7 @@ with page1:
             st.session_state['y_train']=y_train
             sidebar.success(f"Data split into training and testing sets with test size {test_size}.")
             cv=sidebar.checkbox("Do you want to spilt into Cross Validation set?")
+            st.session_state['use_cv'] = cv
             if cv:
                 cv_size=sidebar.slider("Select CV set size:", min_value=0.1, max_value=0.5, value=0.2, step=0.05)
                 random_state_cv=sidebar.number_input("Enter CV Random State (integer):", min_value=0, value=42, step=1)
@@ -392,15 +393,18 @@ with page1:
                                         "algorithm_type":Algorithm_Type
                                     },model_name)
                                     st.success(f"Model saved as {model_name}")
-                                    if 'X_cv' in st.session_state :
-                                        X_eval=st.session_state['X_cv']
-                                        y_eval=st.session_state['y_cv']
-                                    elif 'X_test' in st.session_state:
-                                        X_eval = st.session_state['X_test']
-                                        y_eval = st.session_state['y_test']
+                                    use_cv = st.session_state.get('use_cv', False)
+
+                                    if use_cv and 'X_cv' in st.session_state and 'y_cv' in st.session_state:
+                                        X_eval = st.session_state['X_cv']
+                                        y_eval = st.session_state['y_cv']
+                                        eval_label = "Cross-Validation Set"
                                     else:
                                         X_eval = X_train
-                                        y_eval = y_train    
+                                        y_eval = y_train
+                                        eval_label = "Training Set"
+
+                                    
                                     model_instance=st.session_state['trained_model'][f"{slot}_model"]
                                     y_eval_pred=model_instance.predict(X_eval)
                                     st.session_state[f'y_eval_pred for {slot}']=y_eval_pred
@@ -414,14 +418,16 @@ with page1:
 
                                         with tab_summary:
                                             if Algorithm_Type=='Regression':
-                                                st.subheader(f" Set Performance: {slot}")
+                                                st.subheader(f"{eval_label} Performance: {slot}")
+
                                                 
                                                 st.write(f"MAE: {metrics_cv['MAE']:.4f}")
                                                 st.write(f"MSE: {metrics_cv['MSE']:.4f}")
                                                 st.write(f"RMSE: {metrics_cv['RMSE']:.4f}")
                                                 st.write(f"R2: {metrics_cv['R2']:.4f}")
                                             else:
-                                                st.subheader(f" Set Performance: {slot}")
+                                                st.subheader(f"{eval_label} Performance: {slot}")
+
                                                 st.write(f"Accuracy: {metrics_cv['accuracy']:.4f}")
                                                 st.write(f"Precision: {metrics_cv['precision']:.4f}")
                                                 st.write(f"Recall: {metrics_cv['recall']:.4f}")
