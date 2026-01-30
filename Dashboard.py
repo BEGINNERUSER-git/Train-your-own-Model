@@ -447,6 +447,16 @@ with page1:
                                      labels=model_instance.fit(X_train)
                                      st.session_state['trained_model'][f"{slot}_model"]=model_instance
                                      st.session_state[f"{slot}_labels"]=labels
+                                     labels = np.array(labels).ravel()
+
+                                     unique_clusters = np.unique(labels)
+                                
+                                     if len(unique_clusters) < 2:
+                                        st.error(
+                                            "Silhouette score requires at least 2 clusters. "
+                                            f"Found only {len(unique_clusters)} cluster."
+                                        )
+                                        st.stop()
                                      score=silhouette_score(X_train,labels)
                                      st.metric(label="Silhouette Score",
                                               value=round(score,4))
