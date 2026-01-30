@@ -215,95 +215,95 @@ with page1:
         X = st.session_state.get('X')
         y = st.session_state.get('y')
 
- if mode == "Train New Model":
-    Algorithm_Type = st.session_state.get("Algorithm_Type")
-
-    split = sidebar.checkbox("Do you want to split the Data?")
-    if split:
-        test_size = sidebar.slider(
-            "Select Test Size (as a fraction):",
-            min_value=0.1,
-            max_value=0.5,
-            value=0.2,
-            step=0.05
-        )
-        random_state = sidebar.number_input(
-            "Enter Random State (integer):",
-            min_value=0,
-            value=42,
-            step=1
-        )
-
-        
-        if Algorithm_Type == "Clustering":
-
-            if not X:
-                st.warning("Please select feature columns (X) for clustering.")
-                st.stop()
-
-            X_train = data[X]
-            st.session_state['X_train'] = X_train
-
-         
-            st.session_state.pop('X_test', None)
-            st.session_state.pop('y_test', None)
-            st.session_state.pop('y_train', None)
-
-            sidebar.success("Data prepared for clustering (no train/test split).")
-
-
-        else:
-            if not X or not y:
-                st.warning("Please select both feature (X) and target (y) columns.")
-                st.stop()
-
-            X_train, X_test, y_train, y_test = split_data(
-                data,
-                feature_columns=X,
-                target_column=y,
-                test_size=test_size,
-                random_state=random_state
+     if mode == "Train New Model":
+        Algorithm_Type = st.session_state.get("Algorithm_Type")
+    
+        split = sidebar.checkbox("Do you want to split the Data?")
+        if split:
+            test_size = sidebar.slider(
+                "Select Test Size (as a fraction):",
+                min_value=0.1,
+                max_value=0.5,
+                value=0.2,
+                step=0.05
             )
-
-            st.session_state['X_train'] = X_train
-            st.session_state['y_train'] = y_train
-            st.session_state['X_test'] = X_test
-            st.session_state['y_test'] = y_test
-
-            sidebar.success(
-                f"Data split completed (test size = {test_size})."
+            random_state = sidebar.number_input(
+                "Enter Random State (integer):",
+                min_value=0,
+                value=42,
+                step=1
             )
-
-
-            cv = sidebar.checkbox("Do you want a Cross-Validation set?")
-            st.session_state['use_cv'] = cv
-
-            if cv:
-                cv_size = sidebar.slider(
-                    "Select CV set size:",
-                    min_value=0.1,
-                    max_value=0.5,
-                    value=0.2,
-                    step=0.05
+    
+            
+            if Algorithm_Type == "Clustering":
+    
+                if not X:
+                    st.warning("Please select feature columns (X) for clustering.")
+                    st.stop()
+    
+                X_train = data[X]
+                st.session_state['X_train'] = X_train
+    
+             
+                st.session_state.pop('X_test', None)
+                st.session_state.pop('y_test', None)
+                st.session_state.pop('y_train', None)
+    
+                sidebar.success("Data prepared for clustering (no train/test split).")
+    
+    
+            else:
+                if not X or not y:
+                    st.warning("Please select both feature (X) and target (y) columns.")
+                    st.stop()
+    
+                X_train, X_test, y_train, y_test = split_data(
+                    data,
+                    feature_columns=X,
+                    target_column=y,
+                    test_size=test_size,
+                    random_state=random_state
                 )
-                random_state_cv = sidebar.number_input(
-                    "Enter CV Random State (integer):",
-                    min_value=0,
-                    value=42,
-                    step=1
+    
+                st.session_state['X_train'] = X_train
+                st.session_state['y_train'] = y_train
+                st.session_state['X_test'] = X_test
+                st.session_state['y_test'] = y_test
+    
+                sidebar.success(
+                    f"Data split completed (test size = {test_size})."
                 )
-
-                X_test_final, X_cv, y_test_final, y_cv = train_test_split(
-                    X_test,
-                    y_test,
-                    test_size=cv_size,
-                    random_state=random_state_cv
-                )
-
-                st.session_state['X_test'] = X_test_final
-                st.session_state['y_test'] = y_test_final
-                st.session_state['X_cv'] = X_cv
-                st.session_state['y_cv'] = y_cv
+    
+    
+                cv = sidebar.checkbox("Do you want a Cross-Validation set?")
+                st.session_state['use_cv'] = cv
+    
+                if cv:
+                    cv_size = sidebar.slider(
+                        "Select CV set size:",
+                        min_value=0.1,
+                        max_value=0.5,
+                        value=0.2,
+                        step=0.05
+                    )
+                    random_state_cv = sidebar.number_input(
+                        "Enter CV Random State (integer):",
+                        min_value=0,
+                        value=42,
+                        step=1
+                    )
+    
+                    X_test_final, X_cv, y_test_final, y_cv = train_test_split(
+                        X_test,
+                        y_test,
+                        test_size=cv_size,
+                        random_state=random_state_cv
+                    )
+    
+                    st.session_state['X_test'] = X_test_final
+                    st.session_state['y_test'] = y_test_final
+                    st.session_state['X_cv'] = X_cv
+                    st.session_state['y_cv'] = y_cv
 
     
     with tab3:
