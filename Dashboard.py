@@ -220,13 +220,13 @@ with page1:
             random_state=sidebar.number_input("Enter Random State (integer):", min_value=0, value=42, step=1)
             if not X or not y:
                 st.warning("Please select both feature (X) and target (y) columns from the sidebar to split the data.")
-              if Algorithm_Type=="Clustering":
-                  X_train=data[X]
-                  st.session_state['X_train']=X_train
-              else:
-                X_train, X_test_value, y_train, y_test_value=split_data(data,feature_columns=X, target_column=y, test_size=test_size, random_state=random_state)
-                st.session_state['X_train']=X_train
-                st.session_state['y_train']=y_train
+                if Algorithm_Type=="Clustering":
+                    X_train=data[X]
+                    st.session_state['X_train']=X_train
+                else:
+                    X_train, X_test_value, y_train, y_test_value=split_data(data,feature_columns=X, target_column=y, test_size=test_size, random_state=random_state)
+                    st.session_state['X_train']=X_train
+                    st.session_state['y_train']=y_train
             sidebar.success(f"Data split into training and testing sets with test size {test_size}.")
             cv=sidebar.checkbox("Do you want to spilt into Cross Validation set?")
             st.session_state['use_cv'] = cv
