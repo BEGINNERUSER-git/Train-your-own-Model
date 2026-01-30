@@ -27,6 +27,8 @@ with page1:
         "Select Mode",
         ["Train New Model", "Use Existing Model"]
     )
+    if "Algorithm_Type" not in st.session_state:
+        st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
     
     if mode == "Use Existing Model":
         sidebar.subheader("Select Existing Model")
@@ -334,6 +336,7 @@ with page1:
                 if Algorithm_Type:
                     Model_Type=st.selectbox(f"Select Model Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type].keys()),key=f"{slot}_model",disabled=disabled)
                     st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
+                    
                     if Model_Type:
                         Implementation_Type=st.selectbox(f"Select Implementation Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type][Model_Type].keys()),key=f"{slot}_impl",disabled=disabled)
                         if Implementation_Type:
