@@ -9,6 +9,7 @@ from Data_Cleaning import DataCleaner
 from Model_Training import split_data
 from Standardization import Standardization
 from model_io import save_model,load_model,list_saved_model
+from sklearn.metrics import silhouette_score
 
 
 page1,page2= st.tabs(["Model Training Dashboard","About"])
@@ -196,10 +197,13 @@ with page1:
             "Select Feature Columns (X)",
             options=data.columns.tolist()
         )
-        y = sidebar.selectbox(
-            "Select Target Column (y)",
-            options=data.columns.tolist()
-        )
+        if Algorithm_Type!="Clustering":
+            y = sidebar.selectbox(
+                "Select Target Column (y)",
+                options=data.columns.tolist()
+            )
+        else:
+            y=None
 
         st.session_state['X'] = X
         st.session_state['y'] = y
@@ -216,9 +220,13 @@ with page1:
             random_state=sidebar.number_input("Enter Random State (integer):", min_value=0, value=42, step=1)
             if not X or not y:
                 st.warning("Please select both feature (X) and target (y) columns from the sidebar to split the data.")
-            X_train, X_test_value, y_train, y_test_value=split_data(data,feature_columns=X, target_column=y, test_size=test_size, random_state=random_state)
-            st.session_state['X_train']=X_train
-            st.session_state['y_train']=y_train
+              if Algorithm_Type=='Clustering':
+                  X_train=data[X]
+                  st.session_state['X_train']=X_train
+             else:
+                X_train, X_test_value, y_train, y_test_value=split_data(data,feature_columns=X, target_column=y, test_size=test_size, random_state=random_state)
+                st.session_state['X_train']=X_train
+                st.session_state['y_train']=y_train
             sidebar.success(f"Data split into training and testing sets with test size {test_size}.")
             cv=sidebar.checkbox("Do you want to spilt into Cross Validation set?")
             st.session_state['use_cv'] = cv
@@ -361,6 +369,17 @@ with page1:
                                 params['max_iters']=st.number_input("Enter Maximum no of iterations: ",min_value=100,max_value=10000,value=500,step=100,key=f"{slot}_linreg_max_iters")
                             train=st.button(f"Train {slot}",key=f"train_{slot}",disabled=disabled)
                             if train:
+                                if Algorithm_Type=="Clustering" and Model_Type=="Kmeans":
+                                     X_train=st.session_state['X_train']
+                                     model_instance=model(**params)
+                                     labels=model_instance.fit(X_train)
+                                     st.session_state['trained_model'][f"{slot}_model"]=model_instance
+                                     st.session_state[f"{slot}_labels"]=labels
+                                     score=silhouette_score(X_train,labels)
+                                     st.metric(label="Silhouette Score",
+                                              value=round(score,4))
+                                     st.stop()
+                                    
                                 X_train=st.session_state['X_train']
                                 y_train=st.session_state['y_train']
                                 with st.spinner("Training the model..."):  
@@ -408,8 +427,9 @@ with page1:
                                     model_instance=st.session_state['trained_model'][f"{slot}_model"]
                                     y_eval_pred=model_instance.predict(X_eval)
                                     st.session_state[f'y_eval_pred for {slot}']=y_eval_pred
-                                    metrics_cv=calculate_metrics(y_eval, y_eval_pred)
-                                    st.session_state['metrics_model'][f"{slot}_metrics"]=metrics_cv
+                                    if Algorithm_Type!="Clustering":
+                                        metrics_cv=calculate_metrics(y_eval, y_eval_pred)
+                                        st.session_state['metrics_model'][f"{slot}_metrics"]=metrics_cv
                                 with st.expander(f"{slot} Model Performance"):
                                     if f'{slot}_metrics' in st.session_state["metrics_model"]:
                                         metrics_cv = st.session_state['metrics_model'][f"{slot}_metrics"]
@@ -489,9 +509,12 @@ with page1:
                     if Algorithm_Type=='Clustering':
                         st.write("Clustering models do not have traditional accuracy metrics.")
                         st.subheader("Test Set Performance")
-                        st.write("Predicted Cluster Assignments:")
-                        st.write(f"Cluster Centers:")
-                        st.dataframe(model.centroids)
+                        labels=model.predict(X_test)
+                        st.write("Cluster labels: ")
+                        st.write(labels)
+                        if hasattr(model,"centroids"):
+                            st.write(f"Cluster Centers:")
+                            st.dataframe(model.centroids)
                     else:
                         st.subheader("Test Set Performance")
                         metrics_test=calculate_metrics(y_test, y_test_pred)
@@ -556,7 +579,10 @@ with page1:
             preds = model.predict(df_scaled)
 
             result = pred_data.copy()
-            result["Prediction"] = preds
+            if Algorithm_Type=="Clustering":
+                result["Clusters"] = preds
+            else:    
+                result["Prediction"] = preds
         
             st.session_state['prediction'] = result
             st.success("Prediction Complete")
