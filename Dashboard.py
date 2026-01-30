@@ -456,11 +456,11 @@ with page1:
                                             "Silhouette score requires at least 2 clusters. "
                                             f"Found only {len(unique_clusters)} cluster."
                                         )
-                                        st.stop()
+                                        
                                      score=silhouette_score(X_train,labels)
                                      st.metric(label="Silhouette Score",
                                               value=round(score,4))
-                                     st.stop()
+                                     
                                     
                                 X_train=st.session_state['X_train']
                                 y_train=st.session_state['y_train']
