@@ -199,7 +199,7 @@ with page1:
             "Select Feature Columns (X)",
             options=data.columns.tolist()
         )
-        if st.session_state[f"Algorithm_Type"] and Algorithm_Type!="Clustering":
+        if st.session_state[f"Algorithm_Type"]!= "Clustering":
             y = sidebar.selectbox(
                 "Select Target Column (y)",
                 options=data.columns.tolist()
@@ -222,7 +222,7 @@ with page1:
             random_state=sidebar.number_input("Enter Random State (integer):", min_value=0, value=42, step=1)
             if not X or not y:
                 st.warning("Please select both feature (X) and target (y) columns from the sidebar to split the data.")
-                if st.session_state[f"Algorithm_Type"] and Algorithm_Type=="Clustering":
+                if st.session_state[f"Algorithm_Type"]=="Clustering":
                     X_train=data[X]
                     st.session_state['X_train']=X_train
                 else:
