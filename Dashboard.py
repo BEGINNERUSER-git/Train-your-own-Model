@@ -332,7 +332,8 @@ with page1:
         if not disabled:
             for slot in MODEL_SLOT:
                 st.markdown(f"### {slot}")
-                Algorithm_Type=st.selectbox(f"Select Algorithm Type:{slot}", options=list(MODEL_REGISTRY.keys()),key=f"{slot}_algo",disabled=disabled)
+                algo_options = ["-- Select Algorithm Type --"] + list(MODEL_REGISTRY.keys())
+                Algorithm_Type=st.selectbox(f"Select Algorithm Type:{slot}", options=algo_options,key=f"{slot}_algo",disabled=disabled)
                 if Algorithm_Type:
                     Model_Type=st.selectbox(f"Select Model Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type].keys()),key=f"{slot}_model",disabled=disabled)
                     st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
