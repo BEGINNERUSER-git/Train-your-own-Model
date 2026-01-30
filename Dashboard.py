@@ -335,11 +335,13 @@ with page1:
                 algo_options = ["-- Select Algorithm Type --"] + list(MODEL_REGISTRY.keys())
                 Algorithm_Type=st.selectbox(f"Select Algorithm Type:{slot}", options=algo_options,key=f"{slot}_algo",disabled=disabled)
                 if Algorithm_Type:
-                    Model_Type=st.selectbox(f"Select Model Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type].keys()),key=f"{slot}_model",disabled=disabled)
+                    model_options=["-- Select Model Type --"] +list(MODEL_REGISTRY[Algorithm_Type].keys())
+                    Model_Type=st.selectbox(f"Select Model Type: {slot}", options=model_options,key=f"{slot}_model",disabled=disabled)
                     st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
                     st.session_state[f"Algorithm_Type"]=Algorithm_Type
                     if Model_Type:
-                        Implementation_Type=st.selectbox(f"Select Implementation Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type][Model_Type].keys()),key=f"{slot}_impl",disabled=disabled)
+                        imp_options=["-- Select Implementation Type --"] +list(MODEL_REGISTRY[Algorithm_Type][Model_Type].keys())
+                        Implementation_Type=st.selectbox(f"Select Implementation Type: {slot}", options=imp_options,key=f"{slot}_impl",disabled=disabled)
                         if Implementation_Type:
                             model=MODEL_REGISTRY[Algorithm_Type][Model_Type][Implementation_Type]
                             st.info(f"You have selected: {Algorithm_Type} > {Model_Type} > {Implementation_Type}")
