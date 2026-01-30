@@ -28,7 +28,7 @@ with page1:
         ["Train New Model", "Use Existing Model"]
     )
     if "Algorithm_Type" not in st.session_state:
-        st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
+        st.session_state[f"{slot}_Algorithm_Type"]=None
     
     if mode == "Use Existing Model":
         sidebar.subheader("Select Existing Model")
