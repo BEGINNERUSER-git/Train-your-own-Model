@@ -28,7 +28,7 @@ with page1:
         ["Train New Model", "Use Existing Model"]
     )
     if "Algorithm_Type" not in st.session_state:
-        st.session_state[f"{slot}_Algorithm_Type"]=None
+        st.session_state[f"Algorithm_Type"]=None
     
     if mode == "Use Existing Model":
         sidebar.subheader("Select Existing Model")
@@ -199,7 +199,7 @@ with page1:
             "Select Feature Columns (X)",
             options=data.columns.tolist()
         )
-        if Algorithm_Type!="Clustering":
+        if st.session_state[f"Algorithm_Type"] and Algorithm_Type!="Clustering":
             y = sidebar.selectbox(
                 "Select Target Column (y)",
                 options=data.columns.tolist()
@@ -222,7 +222,7 @@ with page1:
             random_state=sidebar.number_input("Enter Random State (integer):", min_value=0, value=42, step=1)
             if not X or not y:
                 st.warning("Please select both feature (X) and target (y) columns from the sidebar to split the data.")
-                if Algorithm_Type=="Clustering":
+                if st.session_state[f"Algorithm_Type"] and Algorithm_Type=="Clustering":
                     X_train=data[X]
                     st.session_state['X_train']=X_train
                 else:
@@ -336,7 +336,7 @@ with page1:
                 if Algorithm_Type:
                     Model_Type=st.selectbox(f"Select Model Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type].keys()),key=f"{slot}_model",disabled=disabled)
                     st.session_state[f"{slot}_Algorithm_Type"]=Algorithm_Type
-                    
+                    st.session_state[f"Algorithm_Type"]=Algorithm_Type
                     if Model_Type:
                         Implementation_Type=st.selectbox(f"Select Implementation Type: {slot}", options=list(MODEL_REGISTRY[Algorithm_Type][Model_Type].keys()),key=f"{slot}_impl",disabled=disabled)
                         if Implementation_Type:
