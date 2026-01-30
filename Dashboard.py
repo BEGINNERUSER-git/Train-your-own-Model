@@ -215,7 +215,7 @@ with page1:
         X = st.session_state.get('X')
         y = st.session_state.get('y')
 
-     if mode == "Train New Model":
+    if mode == "Train New Model":
         Algorithm_Type = st.session_state.get("Algorithm_Type")
     
         split = sidebar.checkbox("Do you want to split the Data?")
